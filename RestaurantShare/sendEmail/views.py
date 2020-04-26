@@ -5,6 +5,8 @@ from shareRes.models import *
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from django.core.mail import send_mail, EmailMessage
+from django.template.loader import render_to_string
 
 # Create your views here.
 def sendEmail(request):
@@ -22,27 +24,27 @@ def sendEmail(request):
     content = {'inputContent': inputContent, 'restaurants': restaurants}
     msg_html = render_to_string('sendEmail/email_format.html', content)
     msg = EmailMessage(subject = inputTitle, body = msg_html,
-    from_email = "znehraks@gmail.com", bcc = inputReceiver.split(','))
+    from_email = "designc602@gmail.com", bcc = inputReceiver.split(','))
     msg_content_subtype = 'html'
     msg.send()
-    
-        mail_html += "<h2>"+restaurant.restaurant_name+"</h2>"
-        mail_html += "<h4>* 관련링크</h4>"+"<p>"+restaurant.restaurant_link+"</p><br>"
-        mail_html += "<h4>* 상세내용</h4>"+"<p>"+restaurant.restaurant_content+"</p><br>"
-        mail_html += "<h4>* 관련키워드</h4>"+"<p>"+restaurant.restaurant_keyword+"</p><br>"
-        mail_html += "<br>"
-        mail_html += "</body></html>"
 
-        server = smtplib.SMTP_SSL('smtp.gmail.com',465)
-        server.login("designc602@gmail.com", "vhxpdlxh1!")
+        # mail_html += "<h2>"+restaurant.restaurant_name+"</h2>"
+        # mail_html += "<h4>* 관련링크</h4>"+"<p>"+restaurant.restaurant_link+"</p><br>"
+        # mail_html += "<h4>* 상세내용</h4>"+"<p>"+restaurant.restaurant_content+"</p><br>"
+        # mail_html += "<h4>* 관련키워드</h4>"+"<p>"+restaurant.restaurant_keyword+"</p><br>"
+        # mail_html += "<br>"
+        # mail_html += "</body></html>"
 
-        msg = MIMEMultipart('alternative')
-        msg['Subject'] = inputTitle
-        msg['From'] = "djangoemailtester001@gmail.com"
-        msg['To'] = inputReceiver
-        mail_html = MIMEText(mail_html, 'html')
-        msg.attach(mail_html)
-        print(msg['To'],type(msg['To']))
-        server.sendmail(msg['From'],msg['To'].split(','),msg.as_string())
-        server.quit()
+        # server = smtplib.SMTP_SSL('smtp.gmail.com',465)
+        # server.login("designc602@gmail.com", "vhxpdlxh1!")
+
+        # msg = MIMEMultipart('alternative')
+        # msg['Subject'] = inputTitle
+        # msg['From'] = "djangoemailtester001@gmail.com"
+        # msg['To'] = inputReceiver
+        # mail_html = MIMEText(mail_html, 'html')
+        # msg.attach(mail_html)
+        # print(msg['To'],type(msg['To']))
+        # server.sendmail(msg['From'],msg['To'].split(','),msg.as_string())
+        # server.quit()
     return HttpResponseRedirect(reverse('index'))
