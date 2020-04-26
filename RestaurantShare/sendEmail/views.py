@@ -12,13 +12,20 @@ def sendEmail(request):
     inputReceiver = request.POST['inputReceiver']
     inputTitle = request.POST['inputTitle']
     inputContent = request.POST['inputContent']
-
+    restaurants = []
     mail_html = "<html><body>"
     mail_html += "<h1>맛집 공유</h1>"
     mail_html += "<p>"+inputContent+"<br>"
     mail_html += "발신자님께서 공유하신 맛집은 다음과 같습니다.</p>"
     for checked_res_id in checked_res_list:
         restaurant = Restaurant.objects.get(id = checked_res_id)
+    content = {'inputContent': inputContent, 'restaurants': restaurants}
+    msg_html = render_to_string('sendEmail/email_format.html', content)
+    msg = EmailMessage(subject = inputTitle, body = msg_html,
+    from_email = "znehraks@gmail.com", bcc = inputReceiver.split(','))
+    msg_content_subtype = 'html'
+    msg.send()
+    
         mail_html += "<h2>"+restaurant.restaurant_name+"</h2>"
         mail_html += "<h4>* 관련링크</h4>"+"<p>"+restaurant.restaurant_link+"</p><br>"
         mail_html += "<h4>* 상세내용</h4>"+"<p>"+restaurant.restaurant_content+"</p><br>"
